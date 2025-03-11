@@ -5,6 +5,8 @@ import { ThemeProvider } from "@hooks/useTheme";
 import { LanguageProvider } from "@languages/useLanguage";
 import { LogBox } from "react-native";
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
   useEffect(() => {
     // Ignore harmless warnings for now

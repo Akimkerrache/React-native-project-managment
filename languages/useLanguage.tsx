@@ -1,6 +1,5 @@
-// languages/useLanguage.tsx
 import { createContext, useContext, useState } from "react";
-import * as RNLocalize from "react-native-localize";
+import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import en from "./en.json";
 import fr from "./fr.json";
@@ -29,12 +28,19 @@ export const LanguageProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [language, setLanguage] = useState<string>(
-    RNLocalize.getLocales()[0]?.languageCode || "en"
-  );
+  const [language, setLanguage] = useState<string>(() => {
+    try {
+      const locales = Localization.getLocales();
+      return locales[0]?.languageCode || "en";
+    } catch (error) {
+      console.error("Failed to get locales:", error);
+      return "en"; // Fallback to English
+    }
+  });
 
   const toggleLanguage = (lang: string) => {
     setLanguage(lang);
+    i18n.locale = lang;
   };
 
   i18n.locale = language;
